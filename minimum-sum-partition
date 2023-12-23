@@ -1,0 +1,61 @@
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+// } Driver Code Ends
+class Solution{
+
+  public:
+int minDifference(int arr[], int n)  { 
+	    int sum = 0;
+	    for(int i=0;i<n;i++) sum+=arr[i];
+	    vector<vector<int>> dp(sum+1,vector<int>(n,0));
+        for(int i=0;i<n;i++){
+            dp[0][i]=1;
+        }
+        if(arr[0]<=sum) dp[arr[0]][0]=1;
+        for(int s=1;s<=sum;s++){
+            for(int i=1;i<n;i++){
+                int notTake = dp[s][i-1];
+                int take = 0;
+                if(arr[i]<=s) take = dp[s-arr[i]][i-1];
+                dp[s][i]=take | notTake;
+            }
+        }
+        int res = sum;
+        for(int s=0;s<=sum;s++){
+            if(dp[s][n-1]){
+                res = min(res,abs(sum-2*s));
+            }
+        }
+        return res;
+}
+        
+};
+
+
+//{ Driver Code Starts.
+int main() 
+{
+   
+   
+   	int t;
+    cin >> t;
+    while (t--)
+    {
+        int n;
+        cin >> n;
+
+        int a[n];
+        for(int i = 0; i < n; i++)
+        	cin >> a[i];
+
+       
+
+	    Solution ob;
+	    cout << ob.minDifference(a, n) << "\n";
+	     
+    }
+    return 0;
+}
+// } Driver Code Ends
